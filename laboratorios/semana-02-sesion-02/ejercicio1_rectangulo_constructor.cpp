@@ -25,6 +25,7 @@
 // Ejecutar:  ./bin/ejercicio1
 
 #include <iostream>
+using namespace std;
 
 class Rectangulo {
 private:
@@ -38,11 +39,21 @@ public:
         // "Aviso: base invalida, se uso 1.0 por defecto"
 
         // TODO: haz lo mismo con setAltura(alturaInicial) y altura.
+        if(!setBase(baseInicial)){
+            base = 1.0;
+            cout << "Aviso: base invalida, se puso 1.0 como valor por defecto." << endl;
+        }
+        if(!setAltura(alturaInicial)){
+            altura = 1.0;
+            cout << "Aviso: alrura invalida, se puso 1.0 como valor por defecto." << endl;
+        }
     }
 
     ~Rectangulo() {
         // TODO: imprime "Rectangulo destruido: base=" seguido de base,
         // ", altura=" y altura.
+        cout << "Rectangulo destruido: base=" << base
+             << ", altura=" << altura << endl;
     }
 
     double getBase() { return base; }
@@ -74,14 +85,14 @@ public:
 };
 
 int main() {
-    std::cout << "Creando r1..." << std::endl;
+    cout << "Creando r1..." << endl;
     Rectangulo r1(10.0, 5.0);
-    std::cout << "Area r1: " << r1.area() << std::endl;
+    cout << "Area r1: " << r1.area() << endl;
 
-    std::cout << "Creando r2 con base invalida..." << std::endl;
+    cout << "Creando r2 con base invalida..." << endl;
     Rectangulo r2(-3.0, 5.0);
-    std::cout << "Area r2: " << r2.area() << std::endl;
+    cout << "Area r2: " << r2.area() << endl;
 
-    std::cout << "Fin de main" << std::endl;
+    cout << "Fin de main" << endl;
     return 0;
 }

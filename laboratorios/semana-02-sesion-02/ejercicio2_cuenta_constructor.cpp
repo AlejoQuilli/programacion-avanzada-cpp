@@ -18,6 +18,7 @@
 // Ejecutar:  ./bin/ejercicio2
 
 #include <iostream>
+using namespace std;
 
 class CuentaBancaria {
 private:
@@ -28,11 +29,19 @@ public:
         // TODO: si saldoInicial es negativo, asigna saldo = 0.0 y avisa
         // por consola: "Aviso: saldo inicial invalido, se uso 0 por defecto"
         // Si no es negativo, asigna saldo = saldoInicial.
+        if(saldoInicial < 0.0){
+            saldo = 0.0;
+            cout << "Aviso: saldo inicial invalido, se uso 0 por defecto" << endl;
+        }
+        else{
+            saldo = saldoInicial;
+        }
     }
 
     ~CuentaBancaria() {
         // TODO: imprime "CuentaBancaria destruida, saldo final: "
         // seguido del saldo.
+        cout << "CuentaBancaria destruido, saldo final: " << saldo <<endl;
     }
 
     double getSaldo() { return saldo; }
@@ -56,10 +65,10 @@ public:
 
 int main() {
     CuentaBancaria cuenta(100.0);
-    std::cout << "Saldo inicial: " << cuenta.getSaldo() << std::endl;
+    cout << "Saldo inicial: " << cuenta.getSaldo() << endl;
 
     cuenta.depositar(50.0);
-    std::cout << "Saldo despues de depositar 50: " << cuenta.getSaldo() << std::endl;
+    cout << "Saldo despues de depositar 50: " << cuenta.getSaldo() << endl;
 
     return 0;
 }
