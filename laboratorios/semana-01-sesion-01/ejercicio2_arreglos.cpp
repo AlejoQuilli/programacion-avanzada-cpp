@@ -11,6 +11,7 @@
 // Ejecutar:  ./bin/ejercicio2
 
 #include <iostream>
+using namespace std;
 
 int main() {
     int datos[] = {12, 45, 2, 91, 7, 24};
@@ -21,10 +22,22 @@ int main() {
     int maximo = datos[0];
     int suma = 0;
 
+    for(int i=0; i<n; ++i){
+        suma += datos[i];
+
+        if(datos[i] < minimo){
+            minimo = datos[i];
+        }
+        if(datos[i] > maximo){
+            maximo = datos[i];
+        }
+    }
+
     double promedio = static_cast<double>(suma) / n;
 
-    std::cout << "Minimo: " << minimo << std::endl;
-    std::cout << "Maximo: " << maximo << std::endl;
-    std::cout << "Promedio: " << promedio << std::endl;
+    cout << "Minimo: " << minimo << endl;
+    cout << "Maximo: " << maximo << endl;
+    cout << "Promedio: " << promedio << endl;
+
     return 0;
 }
