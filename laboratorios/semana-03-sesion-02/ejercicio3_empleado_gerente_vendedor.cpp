@@ -19,6 +19,7 @@
 // Ejecutar:  ./bin/ejercicio3
 
 #include <iostream>
+using namespace std;
 
 class Empleado {
 private:
@@ -35,13 +36,21 @@ public:
         // TODO: si nuevoSalario no es positivo, devuelve false sin
         // modificar salarioBase. Si no, asigna salarioBase = nuevoSalario
         // y devuelve true.
-        return false;
+        if(nuevoSalario < 0){
+            return false;
+        }
+        salarioBase = nuevoSalario;
+        return true;
     }
 
     bool setAniosServicio(double nuevosAnios) {
         // TODO: mismo patron que setSalarioBase(), pero para
         // aniosServicio (no puede ser negativo).
-        return false;
+        if(nuevosAnios <= 0){
+            return false;
+        }
+        aniosServicio = nuevosAnios;
+        return true;
     }
 
     double getSalarioBase() { return salarioBase; }
@@ -50,25 +59,26 @@ public:
     void describir() {
         // TODO: imprime "Empleado con salario base " + salarioBase +
         // ", " + aniosServicio + " anios de servicio"
+        cout << "Empleado con salario base " << salarioBase << ", " << aniosServicio << " anios de servicio" << endl;
     }
 
     double calcularBonoAntiguedad() {
         // TODO: retorna aniosServicio * 100.0
-        return 0.0;
+        return aniosServicio * 100.0;
     }
 };
 
 class Gerente : public Empleado {
 public:
     void aprobarPresupuesto() {
-        std::cout << "Presupuesto aprobado" << std::endl;
+        cout << "Presupuesto aprobado" << endl;
     }
 };
 
 class Vendedor : public Empleado {
 public:
     void registrarVenta() {
-        std::cout << "Venta registrada" << std::endl;
+        cout << "Venta registrada" << endl;
     }
 };
 
@@ -77,14 +87,14 @@ int main() {
     g.setSalarioBase(1500.0);
     g.setAniosServicio(4.0);
     g.describir();
-    std::cout << "Bono de antiguedad: " << g.calcularBonoAntiguedad() << std::endl;
+    cout << "Bono de antiguedad: " << g.calcularBonoAntiguedad() << endl;
     g.aprobarPresupuesto();
 
     Vendedor v;
     v.setSalarioBase(900.0);
     v.setAniosServicio(1.0);
     v.describir();
-    std::cout << "Bono de antiguedad: " << v.calcularBonoAntiguedad() << std::endl;
+    cout << "Bono de antiguedad: " << v.calcularBonoAntiguedad() << endl;
     v.registrarVenta();
 
     return 0;
