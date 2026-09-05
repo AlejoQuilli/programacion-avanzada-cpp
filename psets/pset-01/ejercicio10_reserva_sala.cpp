@@ -34,6 +34,7 @@
 // Ejecutar:  ./bin/ejercicio10
 
 #include <iostream>
+using namespace std;
 
 class ReservaSala {
 private:
@@ -44,11 +45,25 @@ private:
 public:
     ReservaSala(int capacidadInicial) {
         // TODO
+        if(capacidadInicial <= 0 || capacidadInicial > 50){
+            cout << "Reserva creada, capacidad segura por defecto (5)" << endl;
+            capacidadPersonas = 5;
+        }
+        else{
+            cout << "Reserva creada, capacidad " << capacidadInicial << endl;
+            capacidadPersonas = capacidadInicial;
+        }
     }
 
     bool setHorario(double inicio, double fin) {
         // TODO
-        return false;
+        if(inicio < 0 || fin > 24 || inicio >= fin){
+            return false;
+        }
+        horaInicio = inicio;
+        horaFin = fin;
+
+        return true;
     }
 
     int getCapacidadPersonas() {
@@ -57,6 +72,7 @@ public:
 
     ~ReservaSala() {
         // TODO
+        cout << "Reserva liberada" << endl;
     }
 };
 
@@ -64,17 +80,17 @@ int main() {
     {
         ReservaSala r1(20);
         bool ok1 = r1.setHorario(9.0, 11.0);
-        std::cout << "Horario aceptado (9 a 11): " << std::boolalpha << ok1 << std::endl;
+        cout << "Horario aceptado (9 a 11): " << std::boolalpha << ok1 << endl;
 
         ReservaSala r2(-3);
         bool ok2 = r2.setHorario(14.0, 13.0);
-        std::cout << "Horario aceptado (14 a 13): " << std::boolalpha << ok2 << std::endl;
+        cout << "Horario aceptado (14 a 13): " << std::boolalpha << ok2 << endl;
 
         ReservaSala r3(8);
         bool ok3 = r3.setHorario(16.0, 18.0);
-        std::cout << "Horario aceptado (16 a 18): " << std::boolalpha << ok3 << std::endl;
+        cout << "Horario aceptado (16 a 18): " << std::boolalpha << ok3 << endl;
 
-        std::cout << "--- fin del bloque, se destruyen en orden inverso ---" << std::endl;
+        cout << "--- fin del bloque, se destruyen en orden inverso ---" << endl;
     }
 
     return 0;

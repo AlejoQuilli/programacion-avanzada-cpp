@@ -16,6 +16,7 @@
 // Ejecutar:  ./bin/ejercicio8
 
 #include <iostream>
+using namespace std;
 
 class ExtintorIncendios {
 private:
@@ -26,6 +27,13 @@ public:
         // TODO: si presionInicial es invalida (<= 0 o > 200), imprime el
         // aviso y asigna presionPSI = 100.0. Si no, asigna presionPSI =
         // presionInicial.
+        if(presionInicial <= 0 || presionInicial > 200){
+            cout << "Presion invalida, se asigna presion segura por defecto." << endl;
+            presionPSI = 100.0;
+        }
+        else{
+            presionPSI = presionInicial;
+        }
     }
 
     double getPresionPSI() {
@@ -35,10 +43,10 @@ public:
 
 int main() {
     ExtintorIncendios e1(150.0);
-    std::cout << "Presion: " << e1.getPresionPSI() << std::endl;
+    cout << "Presion: " << e1.getPresionPSI() << endl;
 
     ExtintorIncendios e2(-20.0);
-    std::cout << "Presion: " << e2.getPresionPSI() << std::endl;
+    cout << "Presion: " << e2.getPresionPSI() << endl;
 
     return 0;
 }

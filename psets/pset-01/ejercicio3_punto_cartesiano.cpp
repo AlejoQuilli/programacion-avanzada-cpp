@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <cmath>
+using namespace std;
 
 struct PuntoCartesiano {
     double x, y;
@@ -21,7 +22,9 @@ struct PuntoCartesiano {
     double distancia(PuntoCartesiano otro) {
         // TODO: calcula dx = x - otro.x, dy = y - otro.y, y retorna
         // std::sqrt(dx * dx + dy * dy)
-        return 0.0;
+        double dx = x - otro.x;
+        double dy = y - otro.y;
+        return sqrt(dx * dx + dy * dy);
     }
 };
 
@@ -34,7 +37,7 @@ int main() {
     p2.x = 3.0;
     p2.y = 4.0;
 
-    std::cout << "Distancia entre p1 y p2: " << p1.distancia(p2) << std::endl;
+    cout << "Distancia entre p1 y p2: " << p1.distancia(p2) << endl;
 
     return 0;
 }
