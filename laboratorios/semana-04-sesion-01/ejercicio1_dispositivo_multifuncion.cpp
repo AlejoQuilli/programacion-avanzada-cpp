@@ -25,7 +25,7 @@ class Dispositivo {
         }
 };
 
-class Impresora: public Dispositivo {
+class Impresora: virtual public Dispositivo {
     private:
         int paginasPorMinuto;
     public:
@@ -44,7 +44,7 @@ class Impresora: public Dispositivo {
         }
 };
 
-class Escaner: public Dispositivo {
+class Escaner: virtual public Dispositivo {
     private:
         int resolucionDPI;
     public:
@@ -79,6 +79,9 @@ int main() {
     // y sobre que palabra exactamente?
     // mfp.setNumeroSerie(1234);
     // mfp.describir();
+
+    mfp.setNumeroSerie(1234);
+    mfp.describir();
 
     return 0;
 }
