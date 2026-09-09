@@ -72,7 +72,7 @@ Tu `Impresora` de la sesión pasada (con herencia virtual de `Dispositivo`, sin 
 
 **Antes de escribir código:** explica por qué ese diseño es forzado, igual que `Carro` heredando de `Motor` en el Ejercicio 1.
 
-_(tu respuesta)_
+El diseno class Impresora: public virtual Dispositivo, public Cartucho es forzado porque una impresora no es un cartucho. La herencia representa una relacion de "es un", pero la relacion correcta es "tiene un". Si Impresora heredara directamente de Cartucho, mostraria directamente metodos como consumir() o tieneTinta() como si fueran comportamientos propios de la impresora.
 
 Diseña en su lugar:
 
