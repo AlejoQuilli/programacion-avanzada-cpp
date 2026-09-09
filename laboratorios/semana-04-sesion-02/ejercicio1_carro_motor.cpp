@@ -60,13 +60,35 @@ class Motor {
 // TODO: Carro sigue heredando de Vehiculo (relacion "es un", correcta).
 // En vez de heredar tambien de Motor, agrega un atributo privado "Motor motor;"
 // (relacion "tiene un", composicion) y escribe arrancar() delegando en el.
-class Carro: public Vehiculo, public Motor {
+class Carro: public Vehiculo{
+    // TODO: reemplaza esta herencia forzada por un atributo Motor,
+    // y escribe:
+    // bool arrancar(int potenciaHP): configura la potencia del motor,
+    //   lo enciende, y devuelve si quedo encendido.
+    // void tocarBocina(): imprime "Piii!"
+    private:
+        Motor motor;
     public:
-        // TODO: reemplaza esta herencia forzada por un atributo Motor,
-        // y escribe:
-        // bool arrancar(int potenciaHP): configura la potencia del motor,
-        //   lo enciende, y devuelve si quedo encendido.
-        // void tocarBocina(): imprime "Piii!"
+        bool arrancar(int potenciaHP){
+            motor = Motor();
+            bool potencia = motor.setPotenciaHP(potenciaHP);
+
+            if(!potencia){
+                return false;
+            }
+
+            motor.encender();
+
+            if(!motor.estaEncendido() || !potencia){
+                return false;
+            }
+
+            return true;
+        }
+        
+        void tocarBocina(){
+            std::cout << "Piii!" << std::endl;
+        }
 };
 
 int main() {
