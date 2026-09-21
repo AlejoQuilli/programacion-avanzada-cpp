@@ -1,5 +1,21 @@
 #include <iostream>
 
+class LecturaSensor {
+    private:
+        int valor;
+    public:
+        LecturaSensor(int v){
+            valor = v;
+            std::cout << "Se llamo al constructor" << std::endl;
+        }
+        ~LecturaSensor(){
+            std::cout << "Llamando al destructor" << std::endl;
+        }
+        int getValor(){
+            return valor;
+        }
+};
+
 // TODO: predice antes de compilar. ¿que advertencia esperas que de
 // el compilador sobre esta funcion?
 class LecturaSensor{
@@ -45,7 +61,7 @@ int main() {
     std::cout << std::endl;
     demostrarAlcance();
     LecturaSensor* sensor_ptr = demostrarAlcanceMemoriaDinamica();
-    std::cout << sensor_ptr << std::endl;
+    std::cout << sensor_ptr <<  std::endl;
 
     return 0;
 }
