@@ -2,6 +2,8 @@
 //
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes y tu propio main().
+#include <iostream>
+using namespace std;
 //
 // Disena la clase Historial: atributos privados registros (double*) y
 // cantidad (int). Constructor Historial(int n) que asigna cantidad = n,
@@ -15,6 +17,43 @@
 // asigna registros[indice] = valor y devuelve true, si no devuelve false.
 // Metodo double promedio() que devuelve el promedio de todas las
 // posiciones de registros (la suma de todas dividida entre cantidad).
+class Historial{
+private:
+    double* registros;
+    int cantidad;
+
+public:
+    Historial(int n){
+        cantidad = n;
+
+        registros = new double[cantidad];
+
+        for(int i = 0; i < cantidad; i++){
+            registros[i] = 0.0;
+        }
+    }
+
+    ~Historial(){
+        delete[] registros;
+    }
+
+    bool setRegistro(int indice, double valor){
+        if(indice >= 0 && indice < cantidad){
+            registros[indice] = valor;
+            return true;
+        }
+        return false;
+    }
+
+    double promedio(){
+        double suma = 0.0;
+
+        for(int i = 0; i < cantidad; i++){
+            suma = suma + registros[i];
+        }
+        return suma / cantidad;
+    }
+};
 //
 // En main(), dentro de un bloque { }: crea un Historial de tamano 3,
 // asigna 10.0, 20.0 y 30.0 en las posiciones 0, 1 y 2, e imprime su
@@ -22,6 +61,28 @@
 // tamano 2, asigna 5.0 y 7.0, e imprime su promedio precedido por
 // "Promedio h2: ". Al cerrar el bloque { }, imprime "Fin del bloque"
 // despues de que el bloque termine.
+int main(){
+    {
+        Historial historial1(3);
+
+        historial1.setRegistro(0, 10.0);
+        historial1.setRegistro(1, 20.0);
+        historial1.setRegistro(2, 30.0);
+
+        cout << "Promedio h1: " << historial1.promedio() << endl;
+
+        Historial historial2(2);
+
+        historial2.setRegistro(0, 5.0);
+        historial2.setRegistro(1, 7.0);
+
+        cout << "Promedio h2: " << historial2.promedio() << endl;
+    }
+
+    cout << "Fin del bloque" << endl;
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio22 ejercicio22_historial.cpp
 // Ejecutar: ./ejercicio22

@@ -6,6 +6,9 @@
 // tus propios includes (necesitas <memory> ademas de <iostream>) y tu
 // propio main(). Este es el ejercicio mas exigente del PSet: junta todo lo
 // que practicaste en los ejercicios anteriores en un solo sistema.
+#include <iostream>
+#include <memory>
+using namespace std;
 //
 // Disena cuatro clases:
 //
@@ -14,10 +17,49 @@
 // Getter double getPotenciaHP(). operator<< como funcion libre que recibe
 // std::ostream& y un Motor por valor, e imprime "Motor de " seguido de la
 // potencia y " HP".
+class Motor{
+private:
+    double potenciaHP;
+
+public:
+    bool setPotenciaHP(double p){
+        if(p > 0 && p <= 1000){
+            potenciaHP = p;
+            return true;
+        }
+        return false;
+    }
+
+    double getPotenciaHP(){
+        return potenciaHP;
+    }
+};
+
+ostream& operator<<(ostream& os, Motor m){
+    os << "Motor de: " << m.getPotenciaHP() << "HP";
+    return os;
+}
 //
 // TituloPropiedad: atributo privado numeroRegistro (int). Setter bool
 // setNumeroRegistro(int n) valido si n esta entre 1000 y 999999 (ambos
 // incluidos). Getter int getNumeroRegistro().
+class TituloPropiedad{
+private:
+    int numeroRegistro;
+
+public:
+    bool setNumeroRegistro(int n){
+        if(n >= 1000 && n <= 999999){
+            numeroRegistro = n;
+            return true;
+        }
+        return false;
+    }
+
+    int getNumeroRegistro(){
+        return numeroRegistro;
+    }
+};
 //
 // Vehiculo: un motor propio, exclusivo de este vehiculo (nunca dos
 // vehiculos comparten el mismo motor), representado como
@@ -38,12 +80,63 @@
 // propio) (el vehiculo se queda sin motor despues de llamar a este
 // metodo). Metodo void recibirMotor(std::unique_ptr<Motor> nuevoMotor) que
 // mueve nuevoMotor hacia el motor propio del vehiculo.
+class Vehiculo{
+private:
+    unique_ptr<Motor> motor;
+    shared_ptr<TituloPropiedad> titulo;
+
+public:
+    Vehiculo(){
+    }
+
+    Vehiculo(unique_ptr<Motor> motorInicial){
+        motor = move(motorInicial);
+    }
+
+    void registrarTitulo(shared_ptr<TituloPropiedad> t){
+        titulo = t;
+    }
+
+    bool tieneMotor(){
+        return motor != nullptr;
+    }
+
+    void mostrarMotor(){
+        if(tieneMotor()){
+            cout << *motor << endl;
+        }
+        else{
+            cout << "Vehiculo sin motor" << endl;
+        }
+    }
+
+    unique_ptr<Motor> extraerMotor(){
+        return move(motor);
+    }
+
+    void recibirMotor(unique_ptr<Motor> nuevoMotor){
+        motor = move(nuevoMotor);
+    }
+};
 //
 // Concesionario: un titulo de propiedad compartido, representado como
 // std::shared_ptr<TituloPropiedad>. Metodo void
 // archivarTitulo(std::shared_ptr<TituloPropiedad> t) que asigna su
 // titulo. Metodo int referenciasTitulo() que devuelve
 // tituloEnRegistro.use_count().
+class Concesionario{
+private:
+    shared_ptr<TituloPropiedad> tituloEnRegistro;
+
+public:
+    void archivarTitulo(shared_ptr<TituloPropiedad> t){
+        tituloEnRegistro = t;
+    }
+
+    int referenciasTitulo(){
+        return tituloEnRegistro.use_count();
+    }
+};
 //
 // En main(), en este orden exacto:
 // 1. Crea un std::shared_ptr<TituloPropiedad> con std::make_shared,
@@ -67,6 +160,40 @@
 // 10. Imprime "Motor del vehiculo 1 despues: " (sin salto de linea) y
 //     llama a vehiculo1.mostrarMotor(). Imprime "Motor del vehiculo 2
 //     despues: " (sin salto de linea) y llama a vehiculo2.mostrarMotor().
+int main(){
+
+    shared_ptr<TituloPropiedad> titulo = make_shared<TituloPropiedad>();
+    titulo->setNumeroRegistro(4521);
+
+    unique_ptr<Motor> motor1 = make_unique<Motor>();
+    motor1->setPotenciaHP(180);
+
+    Vehiculo vehiculo1(move(motor1));
+
+    vehiculo1.registrarTitulo(titulo);
+
+    Concesionario concesionario1;
+    concesionario1.archivarTitulo(titulo);
+
+    cout << "Referencias al titulo: " << concesionario1.referenciasTitulo() << endl;
+
+    cout << "Motor del vehiculo 1: ";
+    vehiculo1.mostrarMotor();
+
+    Vehiculo vehiculo2;
+    cout << "Motor del vehiculo 2 antes: ";
+    vehiculo2.mostrarMotor();
+    
+    vehiculo2.recibirMotor(vehiculo1.extraerMotor());
+
+    cout << "Motor del vehiculo 1 despues: ";
+    vehiculo1.mostrarMotor();
+
+    cout << "Motor del vehiculo 2 despues: ";
+    vehiculo2.mostrarMotor();
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio25 ejercicio25_vehiculo_titulo.cpp
 // Ejecutar: ./ejercicio25

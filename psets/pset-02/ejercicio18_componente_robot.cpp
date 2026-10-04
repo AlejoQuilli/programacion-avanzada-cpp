@@ -3,20 +3,73 @@
 //
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes y tu propio main().
+#include <iostream>
+using namespace std;
 //
 // Disena esta jerarquia:
 //
 // Componente: atributo privado codigoSerie (int). Setter bool
 // setCodigoSerie(int c) valido si c esta entre 1000 y 9999 (ambos
 // incluidos). Getter int getCodigoSerie().
+class Componente{
+private:
+    int codigoSerie;
+
+public:
+    bool setCodigoSerie(int c){
+        if(c >= 1000 && c <= 9999){
+            codigoSerie = c;
+            return true;
+        }
+        return false;
+    }
+
+    int getCodigoSerie(){
+        return codigoSerie;
+    }
+};
 //
 // ComponenteMecanico: hereda de Componente. Agrega atributo privado pesoKg
 // (double). Setter bool setPesoKg(double p) valido si p es mayor a 0 y
 // menor o igual a 50. Getter double getPesoKg().
+class ComponenteMecanico : virtual public Componente{
+private:
+    double pesoKg;
+
+public:
+    bool setPesoKg(double p){
+        if(p > 0 && p <= 50){
+            pesoKg = p;
+            return true;
+        }
+        return false;
+    }
+
+    double getPesoKg(){
+        return pesoKg;
+    }
+};
 //
 // ComponenteDigital: hereda de Componente. Agrega atributo privado version
 // (int). Setter bool setVersion(int v) valido si v esta entre 1 y 99
 // (ambos incluidos). Getter int getVersion().
+class ComponenteDigital : virtual public Componente{
+private:
+    int version;
+
+public:
+    bool setVersion(int v){
+        if(v >= 1 && v <= 99){
+            version = v;
+            return true;
+        }
+        return false;
+    }
+
+    int getVersion(){
+        return version;
+    }
+};
 //
 // Robot: hereda de ComponenteMecanico y de ComponenteDigital a la vez.
 // Agrega atributo privado autonomo (bool), con setter void
@@ -27,12 +80,41 @@
 // (Componente), asi que tienes el problema del diamante: usa herencia
 // virtual en ComponenteMecanico y en ComponenteDigital para que Robot
 // termine con una sola copia de Componente, en vez de dos copias ambiguas.
+class Robot : public ComponenteMecanico, public ComponenteDigital{
+private:
+    bool autonomo;
+
+public:
+    void setAutonomo(bool a){
+        autonomo = a;
+    }
+
+    bool getAutonomo(){
+        return autonomo;
+    }
+};
 //
 // En main(): crea un Robot. Asignale codigoSerie = 4821 (setter heredado,
 // una sola vez, no dos), pesoKg = 12.5, version = 3, y autonomo = true.
 // Imprime los cuatro valores, cada uno en su propia linea, con las
 // etiquetas "Codigo serie: ", "Peso: ", "Version: " y "Autonomo: " (usa
 // std::boolalpha antes de imprimir el ultimo).
+int main(){
+
+    Robot robot1;
+
+    robot1.setCodigoSerie(4821);
+    robot1.setPesoKg(12.5);
+    robot1.setVersion(3);
+    robot1.setAutonomo(true);
+
+    cout << "Codigo serie: " << robot1.getCodigoSerie() << endl;
+    cout << "Peso: " << robot1.getPesoKg() << endl;
+    cout << "Version: " << robot1.getVersion() << endl;
+    cout << "Autonomo: " << boolalpha << robot1.getAutonomo() << endl;
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio18 ejercicio18_componente_robot.cpp
 // Ejecutar: ./ejercicio18

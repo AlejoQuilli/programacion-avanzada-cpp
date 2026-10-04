@@ -2,6 +2,8 @@
 //
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes y tu propio main().
+#include <iostream>
+using namespace std;
 //
 // Disena la clase Cola: atributos privados datos (int*) y capacidad (int).
 // Constructor Cola(int c) que asigna capacidad = c, reserva con new[] un
@@ -12,6 +14,39 @@
 // (incluido) y capacidad (excluido); si es valido asigna datos[indice] =
 // valor y devuelve true, si no devuelve false sin modificar nada. Getter
 // int getValor(int indice) que devuelve datos[indice] sin validar.
+class Cola{
+private:
+    int* datos;
+    int capacidad;
+
+public:
+    Cola(int c){
+        capacidad = c;
+
+        datos = new int[capacidad];
+
+        for(int i = 0; i < capacidad; i++){
+            datos[i] = 0;
+        }
+    }
+
+    ~Cola(){
+        delete[] datos;
+        cout << "Cola liberada" << endl;
+    }
+
+    bool agregar(int indice, int valor){
+        if(indice >= 0 && indice < capacidad){
+            datos[indice] = valor;
+            return true;
+        }
+        return false;
+    }
+
+    int getValor(int indice){
+        return datos[indice];
+    }
+};
 //
 // En main(): crea una Cola con capacidad 4. Llama a agregar(1, 55) e
 // imprime su resultado, precedido por "Agregar en 1: ". Llama a
@@ -19,6 +54,20 @@
 // precedido por "Agregar en 9: ". Usa std::boolalpha antes de imprimir
 // ambos resultados. Despues, en un bucle de 0 a 3, imprime cada posicion
 // con el formato "Posicion X: valor" (X es el indice).
+int main(){
+    Cola cola1(4);
+
+    cout << boolalpha;
+
+    cout << "Agregar en 1: " << cola1.agregar(1, 55) << endl;
+    cout << "Agregar en 9: " << cola1.agregar(9, 99) << endl;
+
+    for(int i = 0; i < 4; i++){
+        cout << "Posicion " << i << ": " << cola1.getValor(i) << endl; 
+    }
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio21 ejercicio21_cola.cpp
 // Ejecutar: ./ejercicio21

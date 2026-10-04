@@ -2,12 +2,31 @@
 //
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes y tu propio main().
+#include <iostream>
+using namespace std;
 //
 // Disena dos clases:
 //
 // Bateria: atributo privado cargaPorcentaje (int). Setter bool
 // setCargaPorcentaje(int c) valido si c esta entre 0 y 100 (ambos
 // incluidos). Getter int getCargaPorcentaje().
+class Bateria{
+private:
+    int cargaPorcentaje;
+
+public:
+    bool setCargaPorcentaje(int c){
+        if(c >= 0 && c <= 100){
+            cargaPorcentaje = c;
+            return true;
+        }
+        return false;
+    }
+
+    int getCargaPorcentaje(){
+        return cargaPorcentaje;
+    }
+};
 //
 // Dron: tiene como atributo privado un objeto Bateria (composicion, no
 // herencia) y un atributo privado altitudMetros (double). Metodo bool
@@ -17,12 +36,48 @@
 // devuelve true si la carga de la bateria interna es mayor o igual a 20,
 // false en cualquier otro caso (usa el getter publico de Bateria, no
 // accedas a su atributo privado).
+class Dron{
+private:
+    Bateria bateria;
+    double altitudMetros;
+
+public:
+    bool configurarBateria(int c){
+        return bateria.setCargaPorcentaje(c);
+    }
+
+    bool setAltitudMetros(double a){
+        if(a >= 0 && a <= 500){
+            altitudMetros = a;
+            return true;
+        }
+        return false;
+    }
+
+    bool puedeDespegar(){
+        if(bateria.getCargaPorcentaje() >= 20){
+            return true;
+        }
+        return false;
+    }
+};
 //
 // En main(): crea un Dron. Asignale altitudMetros = 0. Configura su
 // bateria con 10% de carga y muestra el resultado de puedeDespegar(),
 // precedido por "Puede despegar con 10%: ". Despues reconfigura la bateria
 // a 45% y muestra puedeDespegar() otra vez, precedido por "Puede despegar
 // con 45%: ". Usa std::boolalpha antes de imprimir cada resultado booleano.
+int main(){
+    Dron dron1;
+
+    dron1.setAltitudMetros(0);
+    
+    dron1.configurarBateria(10);
+    cout << "Puede despegar con 10%: " << boolalpha << dron1.puedeDespegar() << endl;
+
+    dron1.configurarBateria(45);
+    cout << "Puede despegar con 45%: " << boolalpha << dron1.puedeDespegar() << endl;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio19 ejercicio19_bateria_dron.cpp
 // Ejecutar: ./ejercicio19

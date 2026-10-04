@@ -4,12 +4,32 @@
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes (necesitas <memory> ademas de <iostream>) y tu
 // propio main().
+#include <iostream>
+#include <memory>
+using namespace std;
 //
 // Disena tres clases:
 //
 // Documento: atributo privado numeroVersion (int). Setter bool
 // setNumeroVersion(int v) valido si v esta entre 1 y 999 (ambos
 // incluidos). Getter int getNumeroVersion().
+class Documento{
+private:
+    int numeroVersion;
+
+public:
+    bool setNumeroVersion(int v){
+        if(v >= 1 && v <= 999){
+            numeroVersion = v;
+            return true;
+        }
+        return false;
+    }
+
+    int getNumeroVersion(){
+        return numeroVersion;
+    }
+};
 //
 // Propietario: atributo privado documento, de tipo
 // std::shared_ptr<Documento>. Metodo void adoptar(std::shared_ptr<Documento>
@@ -17,6 +37,23 @@
 // compartido). Metodo void soltar() que llama a documento.reset() (deja de
 // ser dueno). Metodo int contadorReferencias() que devuelve
 // documento.use_count().
+class Propietario{
+private:
+    shared_ptr<Documento> documento;
+
+public:
+    void adoptar(shared_ptr<Documento> doc){
+        documento = doc;
+    }
+
+    void soltar(){
+        documento.reset();
+    }
+
+    int contadorReferencias(){
+        return documento.use_count();
+    }
+};
 //
 // Observador: atributo privado documento, de tipo
 // std::weak_ptr<Documento> (observa el documento sin ser su dueno, y sin
@@ -25,6 +62,19 @@
 // shared_ptr, sin aumentar el numero de duenos). Metodo bool
 // documentoTodaviaExiste() que devuelve true si el documento observado
 // todavia existe (usa .expired() y niegalo).
+class Observador{
+private:
+    weak_ptr<Documento> documento;
+
+public:
+    void observar(shared_ptr<Documento> doc){
+        documento = doc;
+    }
+
+    bool documentoTodaviaExiste(){
+        return !documento.expired();
+    }
+};
 //
 // En main(): crea un std::shared_ptr<Documento> con std::make_shared,
 // llamalo doc, y asignale numeroVersion = 3. Crea un Propietario llamado
@@ -43,6 +93,35 @@
 // dueno.soltar() (ya no queda ningun dueno). Imprime
 // obs.documentoTodaviaExiste() una ultima vez, con la misma etiqueta
 // (ahora debe ser false, porque ya no queda ningun shared_ptr vivo).
+int main(){
+    shared_ptr<Documento> doc = make_shared<Documento>();
+    
+    doc->setNumeroVersion(3);
+
+    Propietario dueno;
+    dueno.adoptar(doc);
+
+    cout << "Referencias tras adoptar: " << dueno.contadorReferencias() << endl;
+
+    Observador obs;
+    obs.observar(doc);
+
+    cout << boolalpha;
+
+    cout << "Documento existe (observador): " << obs.documentoTodaviaExiste() << endl;
+    cout << "Referencias despues de observar: " << dueno.contadorReferencias() << endl;
+
+    doc.reset();
+
+    cout << "Referencias tras reset del original: " << dueno.contadorReferencias() << endl;
+    cout << "Documento existe (observador): " << obs.documentoTodaviaExiste() << endl;
+
+    dueno.soltar();
+
+    cout << "Documento existe (observador): " << obs.documentoTodaviaExiste() << endl;
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio24 ejercicio24_documento_observador.cpp
 // Ejecutar: ./ejercicio24

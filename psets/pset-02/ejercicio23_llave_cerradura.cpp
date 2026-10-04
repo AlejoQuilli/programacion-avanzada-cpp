@@ -3,6 +3,9 @@
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes (necesitas <memory> ademas de <iostream>) y tu
 // propio main().
+#include <iostream>
+#include <memory>
+using namespace std;
 //
 // Disena dos clases:
 //
@@ -10,6 +13,23 @@
 // parametros que asigna numeroSerie = 0. Metodo void
 // setNumeroSerie(int n) sin validacion (asignacion directa). Getter int
 // getNumeroSerie().
+class Llave{
+private:
+    int numeroSerie;
+
+public:
+    Llave(){
+        numeroSerie = 0;
+    }
+
+    void setNumeroSerie(int n){
+        numeroSerie = n;
+    }
+
+    int getNumeroSerie(){
+        return numeroSerie;
+    }
+};
 //
 // Cerradura: atributo privado llaveAsignada, de tipo
 // std::unique_ptr<Llave>. Metodo bool asignarLlave(std::unique_ptr<Llave>
@@ -19,6 +39,24 @@
 // nullptr), el metodo no hace nada y devuelve false. Si esta vacia, mueve
 // nuevaLlave hacia llaveAsignada (con std::move) y devuelve true. Metodo
 // bool tieneLlave() que devuelve true si llaveAsignada no es nullptr.
+class Cerradura{
+private:
+    unique_ptr<Llave> llaveAsignada;
+
+public:
+    bool asignarLlave(unique_ptr<Llave> nuevaLlave){
+        if(llaveAsignada != nullptr){
+            return false;
+        }
+
+        llaveAsignada = move(nuevaLlave);
+        return true;
+    }
+
+    bool tieneLlave(){
+        return llaveAsignada != nullptr;
+    }
+};
 //
 // En main(): crea dos unique_ptr<Llave> con std::make_unique, llamalos
 // llave1 y llave2. Asignales numeroSerie 101 y 202 respectivamente (con
@@ -30,6 +68,24 @@
 // tiene una llave). Imprime tieneLlave() de nuevo, precedido por "Tiene
 // llave despues: ". Usa std::boolalpha antes de imprimir cada resultado
 // booleano.
+int main(){
+    unique_ptr<Llave> llave1 = make_unique<Llave>();
+    unique_ptr<Llave> llave2 = make_unique<Llave>();
+
+    llave1->setNumeroSerie(101);
+    llave2->setNumeroSerie(202);
+
+    Cerradura cerradura1;
+
+    cout << boolalpha;
+
+    cout << "Tiene llave antes: " << cerradura1.tieneLlave() << endl;
+    cout << "Asignar llave 1: " << cerradura1.asignarLlave(move(llave1)) << endl;
+    cout << "Asignar llave 2: " << cerradura1.asignarLlave(move(llave2)) << endl;
+    cout << "Tiene llave despues: " << cerradura1.tieneLlave() << endl;
+
+    return 0;
+}
 //
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio23 ejercicio23_llave_cerradura.cpp
 // Ejecutar: ./ejercicio23
