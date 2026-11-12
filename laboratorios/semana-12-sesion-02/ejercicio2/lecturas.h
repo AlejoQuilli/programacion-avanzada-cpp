@@ -7,15 +7,25 @@
 // Con 6 lecturas y ventana 3 hay 4 promedios: lecturas 0 a 2, 1 a 3, 2 a 4
 // y 3 a 5.
 
-std::vector<double> promedioMovil(std::vector<double> lecturas, int ventana) {
+std::vector<double> promedioMovil(const std::vector<double>& lecturas, int ventana){
     std::vector<double> promedios;
-    int cantidad = lecturas.size();
-    for (int inicio = 0; inicio < cantidad; inicio++) {
+
+    int cantidad = static_cast<int>(lecturas.size());
+
+    if (ventana <= 0 || ventana > cantidad) {
+        return promedios;
+    }
+
+    for (int inicio = 0; inicio <= cantidad - ventana; inicio++){
+
         double suma = 0.0;
+
         for (int j = 0; j < ventana; j++) {
-            suma = suma + lecturas[inicio + j];
+            suma += lecturas[inicio + j];
         }
+
         promedios.push_back(suma / ventana);
     }
+
     return promedios;
 }
